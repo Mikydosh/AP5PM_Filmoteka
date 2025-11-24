@@ -37,8 +37,15 @@ export class MovieService {
   }
   //  Obrázky štábu a herců v detailu filmu
   getProfileUrl(path: string | null): string {
-  if (!path) return 'assets/no-image.png';
-  return `${this.imageBaseUrl}/w185${path}`;
-}
+    if (!path) return 'assets/no-image.png';
+    return `${this.imageBaseUrl}/w185${path}`;
+  }
+
+// Vyhledávání filmů 
+  search(query: string): Observable<MovieResponse> {
+    return this.http.get<MovieResponse>(
+      `${this.baseUrl}/search/movie?api_key=${this.apiKey}&language=cs-CZ&query=${query}`
+    );
+  }
 
 }

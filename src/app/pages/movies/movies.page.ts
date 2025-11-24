@@ -1,27 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonSpinner } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonSpinner, IonSearchbar } from '@ionic/angular/standalone';
 import { MovieService } from 'src/app/services/movie.service';
 import { Movie } from 'src/app/models/movie.model';
 import { Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-movies',
   templateUrl: './movies.page.html',
   styleUrls: ['./movies.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonSpinner]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonSpinner, IonSearchbar]
 })
 export class MoviesPage implements OnInit {
 
   movies: Movie[] = [];
   isLoading = true;
+  //search
+  searchResults: Movie[] = [];
+  isSearching = false;
+  showSearch = false;
+  private searchSubject = new Subject<string>();
 
   constructor(private movieService: MovieService, private router: Router) { }
 
   ngOnInit() {
     this.loadMovies();
+
+    // Debounce pro search (čeká 300ms než začne hledat)
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(query => {
+      if (query.trim().length > 0) {
+        this.performSearch(query);
+      } else {
+        this.clearSearch();
+      }
+    });
   }
 
   loadMovies(){
@@ -48,6 +66,38 @@ export class MoviesPage implements OnInit {
 
   getRatingPercent(rating: number): number{
     return Math.round(rating * 10);
+  }
+
+  // Search funkce
+  onSearchInput(event: any) {
+    const query = event.target.value;
+    this.searchSubject.next(query);
+  }
+
+  performSearch(query: string) {
+    this.isSearching = true;
+    this.showSearch = true;
+    
+    this.movieService.search(query).subscribe({
+      next: (response) => {
+        this.searchResults = response.results;
+        this.isSearching = false;
+      },
+      error: (error) => {
+        console.error('Search error:', error);
+        this.isSearching = false;
+      }
+    });
+  }
+
+  clearSearch() {
+    this.searchResults = [];
+    this.showSearch = false;
+    this.isSearching = false;
+  }
+
+  onSearchCancel() {
+    this.clearSearch();
   }
 
 }
