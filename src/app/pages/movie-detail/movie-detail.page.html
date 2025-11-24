@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/movies" text="Zpět"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ movie?.title || 'Detail filmu' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  @if (isLoading) {
+    <div class="loading">
+      <ion-spinner></ion-spinner>
+      <p>Načítám detail...</p>
+    </div>
+  } @else if (movie) {
+    <div class="movie-detail">
+      <div class="content">
+        <img [src]="getPosterUrl(movie.poster_path)" class="poster" [alt]="movie.title">
+        
+        <h1>{{ movie.title }}</h1>
+        
+        @if (movie.original_title !== movie.title) {
+          <p class="original-title">{{ movie.original_title }}</p>
+        }
+        
+        <div class="meta">
+          <span>{{ getYear(movie.release_date) }}</span>
+          <span>•</span>
+          <span>{{ movie.runtime }} min</span>
+          <span>•</span>
+          <span>{{ getRatingPercent(movie.vote_average) }} %</span>
+        </div>
+        
+        @if (movie.genres.length > 0) {
+          <div class="genres">
+            @for (genre of movie.genres; track genre.id) {
+              <span class="genre">{{ genre.name }}</span>
+            }
+          </div>
+        }
+        
+        @if (movie.overview) {
+          <h2>Popis</h2>
+          <p class="overview">{{ movie.overview }}</p>
+        }
+      </div>
+    </div>
+  }
+</ion-content>

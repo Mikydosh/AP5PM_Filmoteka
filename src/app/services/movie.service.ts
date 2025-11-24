@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Movie, MovieResponse } from '../models/movie.model';
+import { MovieResponse } from '../models/movie.model';
+import { MovieDetail } from '../models/movie.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class MovieService {
 
   constructor(private http: HttpClient) {}
 
+  // HLAVNI STRANKA
   // Populární filmy
   getPopular(): Observable<MovieResponse> {
     return this.http.get<MovieResponse>(
@@ -25,5 +27,12 @@ export class MovieService {
   getPosterUrl(path: string | null): string {
     if (!path) return 'assets/no-image.png';
     return `${this.imageBaseUrl}/w342${path}`;
+  }
+  
+  // DETAIL PO ROZKLIKNUTI FILMU
+  getDetail(id: number): Observable<MovieDetail> {
+    return this.http.get<MovieDetail>(
+      `${this.baseUrl}/movie/${id}?api_key=${this.apiKey}&language=cs-CZ`
+    );
   }
 }

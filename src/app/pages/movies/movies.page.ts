@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonSpinner } from '@ionic/angular/standalone';
 import { MovieService } from 'src/app/services/movie.service';
 import { Movie } from 'src/app/models/movie.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-movies',
@@ -17,7 +18,7 @@ export class MoviesPage implements OnInit {
   movies: Movie[] = [];
   isLoading = true;
 
-  constructor(private movieService: MovieService) { }
+  constructor(private movieService: MovieService, private router: Router) { }
 
   ngOnInit() {
     this.loadMovies();
@@ -39,6 +40,14 @@ export class MoviesPage implements OnInit {
 
   getPosterUrl(path: string | null): string {
     return this.movieService.getPosterUrl(path);
+  }
+
+  openDetail(movieId: number){
+    this.router.navigate(['/movie', movieId]);
+  }
+
+  getRatingPercent(rating: number): number{
+    return Math.round(rating * 10);
   }
 
 }
