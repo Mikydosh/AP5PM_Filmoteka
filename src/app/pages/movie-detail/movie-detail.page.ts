@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons, IonSpinner } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from 'src/app/services/movie.service';
-import { MovieDetail } from 'src/app/models/movie.model';
+import { MovieDetail, Crew } from 'src/app/models/movie.model';
 
 @Component({
   selector: 'app-movie-detail',
@@ -38,7 +38,7 @@ export class MovieDetailPage implements OnInit {
       }
     });
   }
-
+  // Základní informační funkce
   getPosterUrl(path: string | null): string {
     return this.movieService.getPosterUrl(path);
   }
@@ -51,4 +51,19 @@ export class MovieDetailPage implements OnInit {
     return Math.round(rating * 10);
   }
 
+  // Doplňující funkce pro osobnosti filmu
+  // Režisér
+  getDirector(): Crew | null {
+    if (!this.movie?.credits?.crew) return null;
+    return this.movie.credits.crew.find(person => person.job === 'Director') || null;
+  }
+  // Skladatel hudby
+  getComposer(): Crew | null {
+    if(!this.movie?.credits?.crew) return null;
+    return this.movie?.credits?.crew.find (person => person.job === 'Original Music Composer') || null;
+  }
+  // Profilové obrázky
+  getProfileUrl(path: string | null): string {
+    return this.movieService.getProfileUrl(path);
+  }
 }

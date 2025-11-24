@@ -1,3 +1,4 @@
+// HLAVNI STRANKA
 // Základní struktura filmu (pro karty)
 export interface Movie{
     id: number;
@@ -15,7 +16,7 @@ export interface MovieResponse{
     total_results: number;
 }
 
-// Detail filmu -> po rozkliknutí filmu
+// DETAIL FILMU
 export interface MovieDetail {
   id: number;
   title: string;
@@ -27,9 +28,31 @@ export interface MovieDetail {
   vote_count: number;
   runtime: number;
   genres: Genre[];
+  credits?: Credits;
 }
 
 export interface Genre {
   id: number;
   name: string;
+}
+
+// Credits (herci a štáb)
+export interface Credits {
+  cast: Cast[];
+  crew: Crew[];
+}
+
+export interface Cast {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+}
+
+export interface Crew {
+  id: number;
+  name: string;
+  job: string;
+  department: string;
+  profile_path: string | null;
 }

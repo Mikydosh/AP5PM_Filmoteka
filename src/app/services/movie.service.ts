@@ -32,7 +32,13 @@ export class MovieService {
   // DETAIL PO ROZKLIKNUTI FILMU
   getDetail(id: number): Observable<MovieDetail> {
     return this.http.get<MovieDetail>(
-      `${this.baseUrl}/movie/${id}?api_key=${this.apiKey}&language=cs-CZ`
+      `${this.baseUrl}/movie/${id}?api_key=${this.apiKey}&language=cs-CZ&append_to_response=credits,watch/providers`
     );
   }
+  //  Obrázky štábu a herců v detailu filmu
+  getProfileUrl(path: string | null): string {
+  if (!path) return 'assets/no-image.png';
+  return `${this.imageBaseUrl}/w185${path}`;
+}
+
 }

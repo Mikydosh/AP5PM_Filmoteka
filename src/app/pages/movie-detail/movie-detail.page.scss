@@ -73,3 +73,61 @@
     line-height: 1.6;
   }
 }
+
+// štáb a herci
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cast-card {
+  display: flex;
+  gap: 10px;
+  background: var(--ion-card-background);
+  padding: 10px;
+  border-radius: 8px;
+
+  img, .no-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .no-photo {
+    background: var(--ion-color-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+  }
+
+  .cast-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+
+    .name {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .character {
+      font-size: 12px;
+      color: var(--ion-color-medium);
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

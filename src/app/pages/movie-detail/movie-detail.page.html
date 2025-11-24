@@ -44,7 +44,61 @@
           <h2>Popis</h2>
           <p class="overview">{{ movie.overview }}</p>
         }
+
+        <!-- Štáb (režisér a hudba v gridu jako herci) -->
+          @if (getDirector() || getComposer()) {
+            <h2>Štáb</h2>
+            <div class="cast-grid">
+              @if (getDirector(); as director) {
+                <div class="cast-card">
+                  @if (director.profile_path) {
+                    <img [src]="getProfileUrl(director.profile_path)" [alt]="director.name">
+                  } @else {
+                    <div class="no-photo">?</div>
+                  }
+                  <div class="cast-info">
+                    <p class="name">{{ director.name }}</p>
+                    <p class="character">Režie</p>
+                  </div>
+                </div>
+              }
+
+              @if (getComposer(); as composer) {
+                <div class="cast-card">
+                  @if (composer.profile_path) {
+                    <img [src]="getProfileUrl(composer.profile_path)" [alt]="composer.name">
+                  } @else {
+                    <div class="no-photo">?</div>
+                  }
+                  <div class="cast-info">
+                    <p class="name">{{ composer.name }}</p>
+                    <p class="character">Hudba</p>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Herci -->
+          @if (movie.credits?.cast?.length) {
+            <h2>Herci</h2>
+            <div class="cast-grid">
+              @for (actor of (movie.credits?.cast || []).slice(0, 12); track actor.id) {
+                <div class="cast-card">
+                  @if (actor.profile_path) {
+                    <img [src]="getProfileUrl(actor.profile_path)" [alt]="actor.name">
+                  } @else {
+                    <div class="no-photo">?</div>
+                  }
+                  <div class="cast-info">
+                    <p class="name">{{ actor.name }}</p>
+                    <p class="character">{{ actor.character }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
       </div>
-    </div>
   }
 </ion-content>
