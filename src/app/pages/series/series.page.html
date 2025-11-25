@@ -1,13 +1,73 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>series</ion-title>
+    <ion-title>Seriály</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      placeholder="Hledat seriály..."
+      (ionInput)="onSearchInput($event)"
+      (ionCancel)="onSearchCancel()"
+      showCancelButton="focus"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">series</ion-title>
+      <ion-title size="large">Seriály</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <!-- Výsledky vyhledávání -->
+  @if (showSearch) {
+    @if (isSearching) {
+      <div class="loading">
+        <ion-spinner></ion-spinner>
+        <p>Vyhledávám...</p>
+      </div>
+    } @else if (searchResults.length > 0) {
+      <h1>Výsledky vyhledávání...</h1>
+      <div class="series-grid">
+        @for (series of searchResults; track series.id) {
+          <div class="series-card" (click)="openDetail(series.id)">
+            <img [src]="getPosterUrl(series.poster_path)" [alt]="series.name">
+            <div class="series-info">
+              <h3>{{ series.name }}</h3>
+              <p>{{ series.first_air_date | date:'yyyy' }}</p>
+              <p>{{ getRatingPercent(series.vote_average) }}%</p>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="no-results">
+        <p>Žádné výsledky</p>
+      </div>
+    }
+  }
+
+  <!-- Populární seriály (když není aktivní search) -->
+  @if (!showSearch) {
+    @if (isLoading) {
+      <div class="loading">
+        <ion-spinner></ion-spinner>
+        <p>Načítám seriály...</p>
+      </div>
+    } @else {
+      <h1>Populární seriály</h1>
+      <div class="series-grid">
+        @for (series of series; track series.id) {
+          <div class="series-card" (click)="openDetail(series.id)">
+            <img [src]="getPosterUrl(series.poster_path)" [alt]="series.name">
+            <div class="series-info">
+              <h3>{{ series.name }}</h3>
+              <p>{{ series.first_air_date | date:'yyyy' }}</p>
+              <p>⭐ {{ getRatingPercent(series.vote_average) }}%</p>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
 </ion-content>

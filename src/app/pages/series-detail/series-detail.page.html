@@ -1,0 +1,126 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/series" text="Zpět"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ series?.name || 'Detail seriálu' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  @if (isLoading) {
+    <div class="loading">
+      <ion-spinner></ion-spinner>
+      <p>Načítám detail...</p>
+    </div>
+  } @else if (series) {
+    <div class="series-detail">
+      <div class="content">
+        <img [src]="getPosterUrl(series.poster_path)" class="poster" [alt]="series.name">
+        
+        <h1>{{ series.name }}</h1>
+        
+        @if (series.original_name !== series.name) {
+          <p class="original-title">{{ series.original_name }}</p>
+        }
+        
+        <div class="meta">
+          <span>{{ getYear(series.first_air_date) }}</span>
+          <span>•</span>
+          <span>{{ series.number_of_seasons }} sezón</span>
+          <span>•</span>
+          <span>{{ getRuntime() }}</span>
+          <span>•</span>
+          <span>{{ getRatingPercent(series.vote_average) }}%</span>
+        </div>
+        
+        @if (series.genres.length > 0) {
+          <div class="genres">
+            @for (genre of series.genres; track genre.id) {
+              <span class="genre">{{ genre.name }}</span>
+            }
+          </div>
+        }
+        
+        @if (series.overview) {
+          <h2>Popis</h2>
+          <p class="overview">{{ series.overview }}</p>
+        }
+
+        <!-- Tvůrci -->
+        @if (series.created_by && series.created_by.length > 0) {
+          <h2>Tvůrci</h2>
+          <div class="cast-grid">
+            @for (creator of series.created_by; track creator.id) {
+              <div class="cast-card">
+                @if (creator.profile_path) {
+                  <img [src]="getProfileUrl(creator.profile_path)" [alt]="creator.name">
+                } @else {
+                  <div class="no-photo">?</div>
+                }
+                <div class="cast-info">
+                  <p class="name">{{ creator.name }}</p>
+                  <p class="character">Tvůrce</p>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Štáb (režisér a hudba) -->
+        @if (getDirector() || getComposer()) {
+          <h2>Štáb</h2>
+          <div class="cast-grid">
+            @if (getDirector(); as director) {
+              <div class="cast-card">
+                @if (director.profile_path) {
+                  <img [src]="getProfileUrl(director.profile_path)" [alt]="director.name">
+                } @else {
+                  <div class="no-photo">?</div>
+                }
+                <div class="cast-info">
+                  <p class="name">{{ director.name }}</p>
+                  <p class="character">Režie</p>
+                </div>
+              </div>
+            }
+
+            @if (getComposer(); as composer) {
+              <div class="cast-card">
+                @if (composer.profile_path) {
+                  <img [src]="getProfileUrl(composer.profile_path)" [alt]="composer.name">
+                } @else {
+                  <div class="no-photo">?</div>
+                }
+                <div class="cast-info">
+                  <p class="name">{{ composer.name }}</p>
+                  <p class="character">Hudba</p>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Herci -->
+        @if (series.credits?.cast?.length) {
+          <h2>Herci</h2>
+          <div class="cast-grid">
+            @for (actor of (series.credits?.cast || []).slice(0, 6); track actor.id) {
+              <div class="cast-card">
+                @if (actor.profile_path) {
+                  <img [src]="getProfileUrl(actor.profile_path)" [alt]="actor.name">
+                } @else {
+                  <div class="no-photo">?</div>
+                }
+                <div class="cast-info">
+                  <p class="name">{{ actor.name }}</p>
+                  <p class="character">{{ actor.character }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</ion-content>
