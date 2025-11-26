@@ -123,4 +123,10 @@
       </div>
     </div>
   }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button (click)="openAddToListMenu()">
+    <ion-icon [name]="isInAnyList() ? 'bookmark' : 'bookmark-outline'"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 </ion-content>
