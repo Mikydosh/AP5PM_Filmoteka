@@ -1,0 +1,58 @@
+h1 {
+  font-size: 50px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.settings-container {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.settings-section {
+  margin-bottom: 32px;
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--ion-color-medium);
+    letter-spacing: 0.5px;
+    padding: 0 0 8px 4px;
+    margin: 0;
+  }
+
+  ion-list {
+    margin: 0;
+    padding: 0;
+
+    ion-item {
+      --padding-start: 16px;
+      --padding-end: 16px;
+      --min-height: 56px;
+      
+      ion-icon[slot="start"] {
+        margin-right: 16px;
+        font-size: 24px;
+        color: var(--ion-color-medium);
+      }
+
+      ion-label {
+        font-size: 16px;
+      }
+    }
+
+    .danger-item {
+      ion-label {
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.version-label {
+  font-size: 14px;
+  color: var(--ion-color-medium);
+  font-weight: normal;
+}

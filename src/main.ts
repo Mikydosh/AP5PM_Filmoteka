@@ -10,6 +10,17 @@ import { importProvidersFrom } from '@angular/core';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 
+// Inicializace dark mode před startem aplikace
+const savedMode = localStorage.getItem('darkMode');
+if (savedMode === 'true') {
+  document.documentElement.classList.add('ion-palette-dark');
+} else if (savedMode === null) {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+  if (prefersDark.matches) {
+    document.documentElement.classList.add('ion-palette-dark');
+  }
+}
+
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

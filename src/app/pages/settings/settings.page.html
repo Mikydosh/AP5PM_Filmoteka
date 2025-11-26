@@ -1,13 +1,50 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>settings</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">settings</ion-title>
+      <ion-title size="large">Nastavení</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <h1>Filmotéka</h1>
+
+  <div class="settings-container">
+    <!-- Vzhled -->
+    <div class="settings-section">
+      <h2 class="section-title">VZHLED</h2>
+      <ion-list [inset]="true">
+        <ion-item>
+          <ion-icon name="moon" slot="start"></ion-icon>
+          <ion-label>Tmavý režim</ion-label>
+          <ion-toggle 
+            slot="end"
+            [checked]="paletteToggle" 
+            (ionChange)="onDarkModeToggle($event)"
+          ></ion-toggle>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!-- O aplikaci -->
+    <div class="settings-section">
+      <h2 class="section-title">APLIKACE</h2>
+      <ion-list [inset]="true">
+        <ion-item button (click)="showAbout()">
+          <ion-icon name="information-circle" slot="start"></ion-icon>
+          <ion-label>O aplikaci</ion-label>
+          <ion-label slot="end" class="version-label">v{{ appVersion }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <!-- Data -->
+    <div class="settings-section">
+      <h2 class="section-title">DATA</h2>
+      <ion-list [inset]="true">
+        <ion-item button (click)="clearAllData()" class="danger-item">
+          <ion-icon name="trash" slot="start" color="danger"></ion-icon>
+          <ion-label color="danger">Vymazat všechna data</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
 </ion-content>
