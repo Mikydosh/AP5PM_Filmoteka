@@ -1,29 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { 
-  IonHeader, 
-  IonToolbar, 
-  IonTitle, 
-  IonContent, 
-  IonSpinner,
-  IonSearchbar 
-} from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner,IonSearchbar, IonSegment, IonSegmentButton, IonLabel } from '@ionic/angular/standalone';
 import { SeriesService } from '../../services/series.service';
-import { Series } from '../../models/series.model';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { Series, SeriesResponse  } from '../../models/series.model';
+import { debounceTime, distinctUntilChanged, Subject, Observable  } from 'rxjs';
 
 @Component({
   selector: 'app-series',
   templateUrl: 'series.page.html',
   styleUrls: ['series.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner, IonSearchbar],
+  imports: [IonLabel, CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner, IonSearchbar, IonSegment, IonSegmentButton ]
 })
 export class SeriesPage implements OnInit {
   series: Series[] = [];
-  searchResults: Series[] = [];
+  selectedCategory: 'popular' | 'top_rated' | 'on_the_air' = 'popular';
   isLoading = true;
+  //search
+  searchResults: Series[] = []; 
   isSearching = false;
   showSearch = false;
   private searchSubject = new Subject<string>();
@@ -50,18 +45,32 @@ export class SeriesPage implements OnInit {
   }
 
   loadSeries() {
-    this.isLoading = true;
-    this.seriesService.getPopular().subscribe({
-      next: (response) => {
-        this.series = response.results;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading series:', error);
-        this.isLoading = false;
-      }
-    });
+  this.isLoading = true;
+  
+  let request: Observable<SeriesResponse>;
+  
+  switch(this.selectedCategory) {
+    case 'top_rated':
+      request = this.seriesService.getTopRated();
+      break;
+    case 'on_the_air':
+      request = this.seriesService.getOnTheAir();
+      break;
+    default:
+      request = this.seriesService.getPopular();
   }
+  
+  request.subscribe({
+    next: (response) => {
+      this.series = response.results;
+      this.isLoading = false;
+    },
+    error: (error) => {
+      console.error('Error loading series:', error);
+      this.isLoading = false;
+    }
+  });
+}
 
   onSearchInput(event: any) {
     const query = event.target.value;
@@ -104,5 +113,10 @@ export class SeriesPage implements OnInit {
 
   openDetail(seriesId: number) {
     this.router.navigate(['/series', seriesId]);
+  }
+
+  onCategoryChange(event: any) {
+    this.selectedCategory = event.detail.value;
+    this.loadSeries();
   }
 }

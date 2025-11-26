@@ -1,23 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonSpinner, IonSearchbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonSpinner, IonSearchbar, IonSegment, IonSegmentButton, IonLabel } from '@ionic/angular/standalone';
 import { MovieService } from 'src/app/services/movie.service';
-import { Movie } from 'src/app/models/movie.model';
+import { Movie, MovieResponse } from 'src/app/models/movie.model';
 import { Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-movies',
   templateUrl: './movies.page.html',
   styleUrls: ['./movies.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonSpinner, IonSearchbar]
+  imports: [IonLabel, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonSpinner, IonSearchbar, IonSegment, IonSegmentButton]
 })
 export class MoviesPage implements OnInit {
 
   movies: Movie[] = [];
+  selectedCategory: 'popular' | 'top_rated' | 'upcoming' = 'popular';
   isLoading = true;
+
   //search
   searchResults: Movie[] = [];
   isSearching = false;
@@ -42,19 +44,33 @@ export class MoviesPage implements OnInit {
     });
   }
 
-  loadMovies(){
-    this.isLoading = true;
-    this.movieService.getPopular().subscribe({
-      next: (Response) => {
-        this.movies = Response.results;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading movies:', error);
-        this.isLoading = false;
-      }
-    });
+  loadMovies() {
+  this.isLoading = true;
+  
+  let request: Observable<MovieResponse>;
+  
+  switch(this.selectedCategory) {
+    case 'top_rated':
+      request = this.movieService.getTopRated();
+      break;
+    case 'upcoming':
+      request = this.movieService.getUpcoming();
+      break;
+    default:
+      request = this.movieService.getPopular();
   }
+  
+  request.subscribe({
+    next: (response) => {
+      this.movies = response.results;
+      this.isLoading = false;
+    },
+    error: (error) => {
+      console.error('Error loading movies:', error);
+      this.isLoading = false;
+    }
+  });
+}
 
   getPosterUrl(path: string | null): string {
     return this.movieService.getPosterUrl(path);
@@ -98,6 +114,12 @@ export class MoviesPage implements OnInit {
 
   onSearchCancel() {
     this.clearSearch();
+  }
+
+  // Přepínač mezi kategoriemi
+  onCategoryChange(event: any) {
+    this.selectedCategory = event.detail.value;
+    this.loadMovies();
   }
 
 }

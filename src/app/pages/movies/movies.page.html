@@ -10,6 +10,23 @@
       showCancelButton="focus"
 ></ion-searchbar>
   </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-segment 
+      [value]="selectedCategory" 
+      (ionChange)="onCategoryChange($event)"
+    >
+      <ion-segment-button value="popular">
+        <ion-label>Populární</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="top_rated">
+        <ion-label>Nejlépe hodnocené</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="upcoming">
+        <ion-label>Již brzy</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -53,7 +70,13 @@
       <p>Načítám filmy...</p>
     </div>
   } @else{
-    <h1>Populární filmy</h1>
+    <h1>
+      @switch (selectedCategory) {
+        @case ('top_rated') { Nejlépe hodnocené }
+        @case ('upcoming') { Již brzy }
+        @default { Populární filmy }
+      }
+    </h1>
     <div class="movies-grid">
       @for (movie of movies; track movie.id){
         <div class="movie-card" (click)="openDetail(movie.id)">

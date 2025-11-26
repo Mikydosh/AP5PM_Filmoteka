@@ -17,9 +17,23 @@ export class MovieService {
 
   // HLAVNI STRANKA
   // Populární filmy
-  getPopular(): Observable<MovieResponse> {
+  getPopular(page: number = 1): Observable<MovieResponse> {
     return this.http.get<MovieResponse>(
-      `${this.baseUrl}/movie/popular?api_key=${this.apiKey}&language=cs-CZ`
+      `${this.baseUrl}/movie/popular?api_key=${this.apiKey}&language=cs-CZ&page=${page}`
+    );
+  }
+
+  // Top Rated - nejlépe hodnocené
+  getTopRated(page: number = 1): Observable<MovieResponse> {
+    return this.http.get<MovieResponse>(
+      `${this.baseUrl}/movie/top_rated?api_key=${this.apiKey}&language=cs-CZ&page=${page}`
+    );
+  }
+
+  // Upcoming - nadcházející
+  getUpcoming(page: number = 1): Observable<MovieResponse> {
+    return this.http.get<MovieResponse>(
+      `${this.baseUrl}/movie/upcoming?api_key=${this.apiKey}&language=cs-CZ&page=${page}`
     );
   }
 

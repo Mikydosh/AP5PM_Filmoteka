@@ -15,9 +15,23 @@ export class SeriesService {
   constructor(private http: HttpClient) {}
 
   // Populární seriály
-  getPopular(): Observable<SeriesResponse> {
+  getPopular(page: number = 1): Observable<SeriesResponse> {
     return this.http.get<SeriesResponse>(
-      `${this.baseUrl}/tv/popular?api_key=${this.apiKey}&language=cs-CZ`
+      `${this.baseUrl}/tv/popular?api_key=${this.apiKey}&language=cs-CZ&page=${page}`
+    );
+  }
+
+  // Top Rated
+  getTopRated(page: number = 1): Observable<SeriesResponse> {
+    return this.http.get<SeriesResponse>(
+      `${this.baseUrl}/tv/top_rated?api_key=${this.apiKey}&language=cs-CZ&page=${page}`
+    );
+  }
+
+  // On The Air - aktuálně vysílané (podobné jako Upcoming u filmů)
+  getOnTheAir(page: number = 1): Observable<SeriesResponse> {
+    return this.http.get<SeriesResponse>(
+      `${this.baseUrl}/tv/on_the_air?api_key=${this.apiKey}&language=cs-CZ&page=${page}`
     );
   }
 
