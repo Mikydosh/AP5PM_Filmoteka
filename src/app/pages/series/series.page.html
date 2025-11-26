@@ -93,4 +93,14 @@
       </div>
     }
   }
+
+  <!-- Infinite Scroll -->
+  @if (!showSearch && !isLoading) {
+    <ion-infinite-scroll (ionInfinite)="loadMoreSeries($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Načítám další seriály..."
+      ></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  }
 </ion-content>

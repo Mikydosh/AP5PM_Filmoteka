@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonSpinner, IonSearchbar, IonSegment, IonSegmentButton, IonLabel } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonSpinner, IonSearchbar, IonSegment, IonSegmentButton, IonLabel, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 import { MovieService } from 'src/app/services/movie.service';
 import { Movie, MovieResponse } from 'src/app/models/movie.model';
 import { Router } from '@angular/router';
@@ -12,13 +12,17 @@ import { debounceTime, distinctUntilChanged, Subject, Observable } from 'rxjs';
   templateUrl: './movies.page.html',
   styleUrls: ['./movies.page.scss'],
   standalone: true,
-  imports: [IonLabel, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonSpinner, IonSearchbar, IonSegment, IonSegmentButton]
+  imports: [IonLabel, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonSpinner, IonSearchbar, IonSegment, IonSegmentButton, IonInfiniteScroll, IonInfiniteScrollContent ]
 })
 export class MoviesPage implements OnInit {
 
   movies: Movie[] = [];
   selectedCategory: 'popular' | 'top_rated' | 'upcoming' = 'popular';
   isLoading = true;
+
+  // trackování pro infinite scroll
+  currentPage = 1;
+  totalPages = 1;
 
   //search
   searchResults: Movie[] = [];
@@ -45,32 +49,68 @@ export class MoviesPage implements OnInit {
   }
 
   loadMovies() {
-  this.isLoading = true;
-  
-  let request: Observable<MovieResponse>;
-  
-  switch(this.selectedCategory) {
-    case 'top_rated':
-      request = this.movieService.getTopRated();
-      break;
-    case 'upcoming':
-      request = this.movieService.getUpcoming();
-      break;
-    default:
-      request = this.movieService.getPopular();
-  }
-  
-  request.subscribe({
-    next: (response) => {
-      this.movies = response.results;
-      this.isLoading = false;
-    },
-    error: (error) => {
-      console.error('Error loading movies:', error);
-      this.isLoading = false;
+    this.isLoading = true;
+    this.currentPage = 1;
+    
+    let request: Observable<MovieResponse>;
+    
+    switch(this.selectedCategory) {
+      case 'top_rated':
+        request = this.movieService.getTopRated(this.currentPage);
+        break;
+      case 'upcoming':
+        request = this.movieService.getUpcoming(this.currentPage);
+        break;
+      default:
+        request = this.movieService.getPopular(this.currentPage);
     }
-  });
-}
+    
+    request.subscribe({
+      next: (response) => {
+        this.movies = response.results;
+        this.totalPages = response.total_pages;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading movies:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  // Načítání dalších stránek (po 20 filmech) pro infinite scroll 
+  loadMoreMovies(event: any) {
+    if (this.currentPage >= this.totalPages) {
+      event.target.complete();
+      return;
+    }
+
+    this.currentPage++;
+    
+    let request: Observable<MovieResponse>;
+    
+    switch(this.selectedCategory) {
+      case 'top_rated':
+        request = this.movieService.getTopRated(this.currentPage);
+        break;
+      case 'upcoming':
+        request = this.movieService.getUpcoming(this.currentPage);
+        break;
+      default:
+        request = this.movieService.getPopular(this.currentPage);
+    }
+    
+    request.subscribe({
+      next: (response) => {
+        this.movies = [...this.movies, ...response.results];  // ← append, ne replace
+        event.target.complete();
+      },
+      error: (error) => {
+        console.error('Error loading more movies:', error);
+        event.target.complete();
+      }
+    });
+  }
 
   getPosterUrl(path: string | null): string {
     return this.movieService.getPosterUrl(path);

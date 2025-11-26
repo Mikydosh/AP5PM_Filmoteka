@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner,IonSearchbar, IonSegment, IonSegmentButton, IonLabel } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner,IonSearchbar, IonSegment, IonSegmentButton, IonLabel, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 import { SeriesService } from '../../services/series.service';
 import { Series, SeriesResponse  } from '../../models/series.model';
 import { debounceTime, distinctUntilChanged, Subject, Observable  } from 'rxjs';
@@ -11,12 +11,17 @@ import { debounceTime, distinctUntilChanged, Subject, Observable  } from 'rxjs';
   templateUrl: 'series.page.html',
   styleUrls: ['series.page.scss'],
   standalone: true,
-  imports: [IonLabel, CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner, IonSearchbar, IonSegment, IonSegmentButton ]
+  imports: [IonLabel, CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner, IonSearchbar, IonSegment, IonSegmentButton, IonInfiniteScroll, IonInfiniteScrollContent ]
 })
 export class SeriesPage implements OnInit {
   series: Series[] = [];
   selectedCategory: 'popular' | 'top_rated' | 'on_the_air' = 'popular';
   isLoading = true;
+
+  // trackování pro infinite scroll
+  currentPage = 1;
+  totalPages = 1;
+
   //search
   searchResults: Series[] = []; 
   isSearching = false;
@@ -45,32 +50,68 @@ export class SeriesPage implements OnInit {
   }
 
   loadSeries() {
-  this.isLoading = true;
-  
-  let request: Observable<SeriesResponse>;
-  
-  switch(this.selectedCategory) {
-    case 'top_rated':
-      request = this.seriesService.getTopRated();
-      break;
-    case 'on_the_air':
-      request = this.seriesService.getOnTheAir();
-      break;
-    default:
-      request = this.seriesService.getPopular();
-  }
-  
-  request.subscribe({
-    next: (response) => {
-      this.series = response.results;
-      this.isLoading = false;
-    },
-    error: (error) => {
-      console.error('Error loading series:', error);
-      this.isLoading = false;
+    this.isLoading = true;
+    this.currentPage = 1;
+    
+    let request: Observable<SeriesResponse>;
+    
+    switch(this.selectedCategory) {
+      case 'top_rated':
+        request = this.seriesService.getTopRated(this.currentPage);
+        break;
+      case 'on_the_air':
+        request = this.seriesService.getOnTheAir(this.currentPage);
+        break;
+      default:
+        request = this.seriesService.getPopular(this.currentPage);
     }
-  });
-}
+    
+    request.subscribe({
+      next: (response) => {
+        this.series = response.results;
+        this.totalPages = response.total_pages;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading series:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  // Načítání dalších stránek (po 20 filmech) pro infinite scroll
+  loadMoreSeries(event: any) {
+    if (this.currentPage >= this.totalPages) {
+      event.target.complete();
+      return;
+    }
+
+    this.currentPage++;
+    
+    let request: Observable<SeriesResponse>;
+    
+    switch(this.selectedCategory) {
+      case 'top_rated':
+        request = this.seriesService.getTopRated(this.currentPage);
+        break;
+      case 'on_the_air':
+        request = this.seriesService.getOnTheAir(this.currentPage);
+        break;
+      default:
+        request = this.seriesService.getPopular(this.currentPage);
+    }
+    
+    request.subscribe({
+      next: (response) => {
+        this.series = [...this.series, ...response.results];
+        event.target.complete();
+      },
+      error: (error) => {
+        console.error('Error loading more series:', error);
+        event.target.complete();
+      }
+    });
+  }
 
   onSearchInput(event: any) {
     const query = event.target.value;

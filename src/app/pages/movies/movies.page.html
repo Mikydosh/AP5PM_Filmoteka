@@ -19,11 +19,11 @@
       <ion-segment-button value="popular">
         <ion-label>Populární</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="top_rated">
-        <ion-label>Nejlépe hodnocené</ion-label>
-      </ion-segment-button>
       <ion-segment-button value="upcoming">
         <ion-label>Již brzy</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="top_rated">
+        <ion-label>Nejlépe hodnocené</ion-label>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -91,4 +91,14 @@
     </div>
   }
 }
+
+<!-- Infinite Scroll -->
+  @if (!showSearch && !isLoading) {
+    <ion-infinite-scroll (ionInfinite)="loadMoreMovies($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Načítám další filmy..."
+      ></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  }
 </ion-content>
