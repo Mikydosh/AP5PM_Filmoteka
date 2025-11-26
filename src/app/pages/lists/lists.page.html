@@ -27,6 +27,13 @@
             <h2>{{ list.name }}</h2>
             <p>{{ list.items.length }} položek</p>
           </div>
+
+          @if (!list.isDefault) {
+            <button class="delete-button" (click)="deleteList(list, $event)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          }
+
           <ion-icon name="chevron-forward-outline" class="chevron"></ion-icon>
         </div>
       }

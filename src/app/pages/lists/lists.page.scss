@@ -60,6 +60,28 @@
     }
   }
 
+  .delete-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(var(--ion-color-danger-rgb), 0.1);
+    color: var(--ion-color-danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 18px;
+    }
+
+    &:active {
+      background: rgba(var(--ion-color-danger-rgb), 0.2);
+    }
+  }
+
   .chevron {
     font-size: 20px;
     color: var(--ion-color-medium);

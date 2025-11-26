@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonSpinner, IonFab, IonFabButton, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { add, list, checkmarkCircle, timeOutline } from 'ionicons/icons';
+import { add, list, checkmarkCircle, timeOutline, trash } from 'ionicons/icons';
 import { StorageService } from '../../services/storage.service';
 import { MediaList } from '../../models/list.model';
 
@@ -23,7 +23,7 @@ export class ListsPage implements OnInit {
     private router: Router,
     private alertController: AlertController
   ) {
-    addIcons({ add, list, checkmarkCircle, timeOutline });
+    addIcons({ add, list, checkmarkCircle, timeOutline, trash });
   }
 
   async ngOnInit() {
@@ -80,4 +80,41 @@ export class ListsPage implements OnInit {
     if (listId === 'watchlist') return 'time-outline';
     return 'list';
   }
+
+  // Smazání seznamu
+  async deleteList(list: MediaList, event: Event) {
+  event.stopPropagation(); // Zamezí otevření seznamu
+
+  if (list.isDefault) {
+    // Nelze smazat výchozí seznamy - kontrola
+    const alert = await this.alertController.create({
+      header: 'Nelze smazat',
+      message: 'Výchozí seznamy nelze smazat.',
+      buttons: ['OK']
+    });
+    await alert.present();
+    return;
+  }
+
+  const alert = await this.alertController.create({
+    header: 'Smazat seznam',
+    message: `Opravdu chcete smazat tento seznam? Akce je nevratná.`,
+    buttons: [
+      {
+        text: 'Zrušit',
+        role: 'cancel'
+      },
+      {
+        text: 'Smazat',
+        role: 'destructive',
+        handler: async () => {
+          await this.storageService.deleteList(list.id);
+          await this.loadLists();
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
 }
