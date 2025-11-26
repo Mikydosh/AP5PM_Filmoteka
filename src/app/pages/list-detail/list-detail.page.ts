@@ -1,0 +1,104 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons, IonSpinner, IonIcon, AlertController } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { trash } from 'ionicons/icons';
+import { StorageService } from '../../services/storage.service';
+import { MediaList, MediaItem } from '../../models/list.model';
+
+@Component({
+  selector: 'app-list-detail',
+  templateUrl: './list-detail.page.html',
+  styleUrls: ['./list-detail.page.scss'],
+  standalone: true,
+  imports: [ CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons, IonSpinner, IonIcon ],
+})
+export class ListDetailPage implements OnInit {
+  list: MediaList | null = null;
+  isLoading = true;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private storageService: StorageService,
+    private alertController: AlertController
+  ) {
+    addIcons({ trash });
+  }
+
+  async ngOnInit() {
+    const listId = this.route.snapshot.paramMap.get('id');
+    if (listId) {
+      await this.loadList(listId);
+    }
+  }
+
+  async ionViewWillEnter() {
+    // Reload
+    const listId = this.route.snapshot.paramMap.get('id');
+    if (listId) {
+      await this.loadList(listId);
+    }
+  }
+
+  async loadList(listId: string) {
+    this.isLoading = true;
+    this.list = await this.storageService.getList(listId);
+    this.isLoading = false;
+  }
+
+  openDetail(item: MediaItem) {
+    if (item.type === 'movie') {
+      this.router.navigate(['/movie', item.id]);
+    } else {
+      this.router.navigate(['/series', item.id]);
+    }
+  }
+
+  async removeItem(item: MediaItem, event: Event) {
+    event.stopPropagation(); // Zamezí kliknutí na celou kartu
+    
+    const alert = await this.alertController.create({
+      header: 'Odebrat ze seznamu',
+      message: `Opravdu chcete odebrat "${item.title}" ze seznamu?`,
+      buttons: [
+        {
+          text: 'Zrušit',
+          role: 'cancel'
+        },
+        {
+          text: 'Odebrat',
+          role: 'destructive',
+          handler: async () => {
+            if (this.list) {
+              await this.storageService.removeFromList(this.list.id, item.id, item.type);
+              await this.loadList(this.list.id);
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  getRatingPercent(rating: number): number {
+    return Math.round(rating * 10);
+  }
+
+  getPosterUrl(path: string | null): string {
+    if (!path) return 'assets/no-image.png';
+    return `https://image.tmdb.org/t/p/w342${path}`;
+  }
+
+  getYear(date: string): string {
+    if (!date) return 'N/A';
+    return new Date(date).getFullYear().toString();
+  }
+
+  getType(name: string): string{
+    if(name === 'movie') return 'Film';
+    return 'Seriál';
+  }
+}

@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/lists" text="Zpět"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ list?.name || 'Seznam' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  @if (isLoading) {
+    <div class="loading">
+      <ion-spinner></ion-spinner>
+      <p>Načítám seznam...</p>
+    </div>
+  } @else if (list) {
+    @if (list.items.length > 0) {
+      <div class="items-list">
+        @for (item of list.items; track item.id + item.type) {
+          <div class="item-card" (click)="openDetail(item)">
+            <img 
+              [src]="getPosterUrl(item.poster_path)" 
+              [alt]="item.title"
+              class="item-poster"
+            >
+            <div class="item-info">
+              <h3>{{ item.title }}</h3>
+              <div class="item-meta">
+                <span class="type-badge">{{ getType(item.type) }}</span>
+                <span>{{ getYear(item.release_date) }}</span>
+                <span>{{ getRatingPercent(item.vote_average) }}%</span>
+              </div>
+            </div>
+            <button class="delete-button" (click)="removeItem(item, $event)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <ion-icon name="film-outline"></ion-icon>
+        <p>Žádné položky v seznamu</p>
+        <p class="hint">Přidejte filmy nebo seriály z jejich detailu</p>
+      </div>
+    }
+  }
+</ion-content>
