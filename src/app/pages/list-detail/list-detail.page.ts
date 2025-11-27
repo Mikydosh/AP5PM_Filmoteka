@@ -101,4 +101,30 @@ export class ListDetailPage implements OnInit {
     if(name === 'movie') return 'Film';
     return 'Seriál';
   }
+
+  // VZHLED
+  getRatingColor(rating: number): string {
+    const percent = this.getRatingPercent(rating);
+    if (percent >= 85) return '#48E096';
+    if (percent >= 80) return '#88DB40';
+    if (percent >= 70) return '#B2DF39';
+    if (percent >= 60) return '#D6E233';
+    if (percent >= 50) return '#ECE430';
+    if (percent >= 30) return '#D9B82F';
+    if (percent >= 20) return '#B4622E';
+    if (percent === 0) return 'var(--ion-color-medium)';
+    return '#9E2E2E';
+  }
+
+  getRatingDashArray(rating: number): string {
+    const percent = this.getRatingPercent(rating);
+    const circumference = 2 * Math.PI * 16; // 2πr kde r=16
+
+    if (percent === 0) {
+      // Pro 0% celý kruh v šedé
+      return `${circumference} ${circumference}`;
+    }
+    const dash = (percent / 100) * circumference;
+    return `${dash} ${circumference}`;
+  }
 }
