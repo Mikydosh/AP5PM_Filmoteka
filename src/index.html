@@ -17,6 +17,21 @@
   <!-- add to homescreen for ios -->
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+   <script>
+  (function() {
+    const savedMode = localStorage.getItem('darkMode');
+    
+    // Výchozí je TMAVÝ režim
+    if (savedMode === 'false') {
+      // Pouze pokud uživatel EXPLICITNĚ vypnul dark mode
+      document.documentElement.classList.remove('ion-palette-dark');
+    } else {
+      // Všechny ostatní případy = tmavý režim (výchozí)
+      document.documentElement.classList.add('ion-palette-dark');
+    }
+  })();
+</script>
 </head>
 
 <body>

@@ -91,4 +91,46 @@ export class LoginPage {
     });
     await alert.present();
   }
+
+  // Resetování hesla:
+  async resetPassword() {
+  const alert = await this.alertController.create({
+    header: 'Obnovit heslo',
+    message: 'Zadejte email pro obnovení hesla',
+    inputs: [
+      {
+        name: 'email',
+        type: 'email',
+        placeholder: 'Email',
+        value: this.email // předvyplň aktuální email
+      }
+    ],
+    buttons: [
+      {
+        text: 'Zrušit',
+        role: 'cancel'
+      },
+      {
+        text: 'Odeslat',
+        handler: async (data) => {
+          if (!data.email) {
+            this.showAlert('Chyba', 'Vyplňte email');
+            return false;
+          }
+          
+          try {
+            await this.authService.resetPassword(data.email);
+            this.showAlert('Hotovo', 'Email s odkazem pro obnovení hesla byl odeslán');
+            return true;
+          } catch (error: any) {
+            this.handleError(error);
+            return false;
+          }
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
 }

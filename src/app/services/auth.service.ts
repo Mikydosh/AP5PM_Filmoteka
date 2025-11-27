@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, updatePassword } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, updatePassword, sendPasswordResetEmail } from '@angular/fire/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -54,5 +54,10 @@ export class AuthService {
     if (!user) throw new Error('User not logged in');
     
     await updatePassword(user, newPassword);
+  }
+
+  // Reset hesla
+  async resetPassword(email: string): Promise<void> {
+    await sendPasswordResetEmail(this.auth, email);
   }
 }

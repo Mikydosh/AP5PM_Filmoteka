@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonToggle, IonIcon, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { informationCircle, trash, moon as moonIcon, logOut, key  } from 'ionicons/icons';
+import { informationCircle, trash, moon as moonIcon, logOut, key, sunny } from 'ionicons/icons';
 import { FirestoreService } from '../../services/firestore.service';
 // odhlašování
 import { AuthService } from '../../services/auth.service';
@@ -26,7 +26,7 @@ export class SettingsPage implements OnInit {
     private authService: AuthService,
     private router: Router
   ) {
-    addIcons({ moon: moonIcon, informationCircle, trash, 'log-out-outline': logOut, 'key-outline': key });
+    addIcons({ moon: moonIcon, informationCircle, trash, 'log-out-outline': logOut, 'key-outline': key, sunny });
   }
 
   ngOnInit() {
@@ -34,40 +34,32 @@ export class SettingsPage implements OnInit {
   const user = this.authService.getCurrentUser();
   this.userEmail = user?.email || 'Nepřihlášený';
 
-  // Načti uložené nastavení
+  // VÝCHOZÍ je TMAVÝ
   const savedMode = localStorage.getItem('darkMode');
-  
-  if (savedMode !== null) {
-    this.paletteToggle = savedMode === 'true';
+  if (savedMode === 'false') {
+    // Uživatel má SVĚTLÝ režim
+    this.paletteToggle = false;
   } else {
-    // Použij systémové nastavení
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    this.paletteToggle = prefersDark.matches;
+    // Výchozí TMAVÝ režim
+    this.paletteToggle = true;
   }
-  
-  this.toggleDarkPalette(this.paletteToggle);
-  
-  // Poslouchej změny systémového nastavení (volitelné)
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-  prefersDark.addEventListener('change', (mediaQuery) => {
-    if (localStorage.getItem('darkMode') === null) {
-      this.paletteToggle = mediaQuery.matches;
-      this.toggleDarkPalette(mediaQuery.matches);
-    }
-  });
 }
 
 onDarkModeToggle(event: any) {
   this.paletteToggle = event.detail.checked;
-  this.toggleDarkPalette(this.paletteToggle);
-  localStorage.setItem('darkMode', this.paletteToggle.toString());
+  
+  if (this.paletteToggle) {
+    // ZAPNOUT tmavý režim
+    document.documentElement.classList.add('ion-palette-dark');
+    localStorage.setItem('darkMode', 'true');
+  } else {
+    // VYPNOUT tmavý režim (světlý)
+    document.documentElement.classList.remove('ion-palette-dark');
+    localStorage.setItem('darkMode', 'false');
+  }
 }
 
-toggleDarkPalette(shouldAdd: boolean) {
-  document.documentElement.classList.toggle('ion-palette-dark', shouldAdd);
-}
-
-    async showAbout() {
+async showAbout() {
     const alert = await this.alertController.create({
       header: 'O aplikaci',
       message: `

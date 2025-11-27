@@ -1,47 +1,65 @@
 <ion-content class="ion-padding">
   <div class="login-container">
+    
+    <!-- Logo -->
     <div class="logo-section">
-      <h1>🎬 Filmotéka</h1>
-      <p>Spravujte své filmy a seriály</p>
+      <div class="logo"></div>
+      <h1>Filmotéka</h1>
+      <p class="tagline">Spravujte své filmy a seriály</p>
     </div>
 
+    <!-- Formulář -->
     <div class="form-section">
-      <h2>{{ isLogin ? 'Přihlášení' : 'Registrace' }}</h2>
+      <div class="form-card">
+        <h2>{{ isLogin ? 'Přihlášení' : 'Registrace' }}</h2>
 
-      <ion-item>
-        <ion-label position="floating">Email</ion-label>
-        <ion-input 
-          type="email" 
-          [(ngModel)]="email"
-          autocomplete="email"
-        ></ion-input>
-      </ion-item>
+        <div class="inputs">
+          <ion-input
+            label="Email"
+            label-placement="floating"
+            fill="outline"
+            type="email"
+            [(ngModel)]="email"
+            placeholder="Zadejte email"
+            class="input-field"
+          ></ion-input>
 
-      <ion-item>
-        <ion-label position="floating">Heslo</ion-label>
-        <ion-input 
-          type="password" 
-          [(ngModel)]="password"
-          autocomplete="current-password"
-        ></ion-input>
-      </ion-item>
+          <ion-input
+            label="Heslo"
+            label-placement="floating"
+            fill="outline"
+            type="password"
+            [(ngModel)]="password"
+            placeholder="Zadejte heslo"
+            class="input-field"
+          ></ion-input>
+        </div>
 
-      <ion-button 
-        expand="block" 
-        (click)="onSubmit()"
-        class="submit-button"
-      >
-        {{ isLogin ? 'Přihlásit se' : 'Registrovat' }}
-      </ion-button>
+        @if (isLogin) {
+          <div class="forgot-password">
+            <ion-button fill="clear" size="small" (click)="resetPassword()">
+              Zapomenuté heslo?
+            </ion-button>
+          </div>
+        }
 
+        <ion-button 
+          expand="block" 
+          (click)="onSubmit()"
+          class="submit-button"
+        >
+          {{ isLogin ? 'Přihlásit se' : 'Registrovat' }}
+        </ion-button>
+      </div>
+
+      <!-- Toggle -->
       <div class="toggle-section">
-        <ion-text color="medium">
-          {{ isLogin ? 'Nemáte účet?' : 'Již máte účet?' }}
-        </ion-text>
+        <span>{{ isLogin ? 'Nemáte účet?' : 'Již máte účet?' }}</span>
         <ion-button fill="clear" (click)="toggleMode()">
           {{ isLogin ? 'Registrovat se' : 'Přihlásit se' }}
         </ion-button>
       </div>
     </div>
+
   </div>
 </ion-content>

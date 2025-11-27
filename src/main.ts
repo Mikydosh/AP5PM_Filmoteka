@@ -17,17 +17,6 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from './environments/environment';
 
 
-// Inicializace dark mode před startem aplikace
-const savedMode = localStorage.getItem('darkMode');
-if (savedMode === 'true') {
-  document.documentElement.classList.add('ion-palette-dark');
-} else if (savedMode === null) {
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-  if (prefersDark.matches) {
-    document.documentElement.classList.add('ion-palette-dark');
-  }
-}
-
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
