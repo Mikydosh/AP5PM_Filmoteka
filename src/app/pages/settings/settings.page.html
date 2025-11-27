@@ -46,5 +46,17 @@
         </ion-item>
       </ion-list>
     </div>
+    <!-- Účet -->
+    <div class="settings-section">
+      <h2 class="section-title">ÚČET</h2>
+      <ion-list [inset]="true">
+        <ion-item button (click)="logout()" class="danger-item">
+          <ion-icon name="log-out-outline" slot="start" color="danger"></ion-icon>
+          <ion-label color="danger">Odhlásit se</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
   </div>
+
+
 </ion-content>

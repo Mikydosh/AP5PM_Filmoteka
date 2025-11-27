@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonToggle, IonIcon, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { informationCircle, trash, moon as moonIcon } from 'ionicons/icons';
+import { informationCircle, trash, moon as moonIcon, logOut  } from 'ionicons/icons';
 import { StorageService } from '../../services/storage.service';
+// odhlašování
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -18,9 +21,11 @@ export class SettingsPage implements OnInit {
 
   constructor(
     private storageService: StorageService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private authService: AuthService,
+    private router: Router
   ) {
-    addIcons({ moon: moonIcon, informationCircle, trash });
+    addIcons({ moon: moonIcon, informationCircle, trash, 'log-out-outline': logOut });
   }
 
   ngOnInit() {
@@ -115,4 +120,26 @@ toggleDarkPalette(shouldAdd: boolean) {
 
     await alert.present();
   }
+
+  async logout() {
+  const alert = await this.alertController.create({
+    header: 'Odhlásit se',
+    message: 'Opravdu se chcete odhlásit?',
+    buttons: [
+      {
+        text: 'Zrušit',
+        role: 'cancel'
+      },
+      {
+        text: 'Odhlásit',
+        handler: async () => {
+          await this.authService.logout();
+          this.router.navigate(['/login']);
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
 }

@@ -1,0 +1,47 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <div class="logo-section">
+      <h1>🎬 Filmotéka</h1>
+      <p>Spravujte své filmy a seriály</p>
+    </div>
+
+    <div class="form-section">
+      <h2>{{ isLogin ? 'Přihlášení' : 'Registrace' }}</h2>
+
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input 
+          type="email" 
+          [(ngModel)]="email"
+          autocomplete="email"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Heslo</ion-label>
+        <ion-input 
+          type="password" 
+          [(ngModel)]="password"
+          autocomplete="current-password"
+        ></ion-input>
+      </ion-item>
+
+      <ion-button 
+        expand="block" 
+        (click)="onSubmit()"
+        class="submit-button"
+      >
+        {{ isLogin ? 'Přihlásit se' : 'Registrovat' }}
+      </ion-button>
+
+      <div class="toggle-section">
+        <ion-text color="medium">
+          {{ isLogin ? 'Nemáte účet?' : 'Již máte účet?' }}
+        </ion-text>
+        <ion-button fill="clear" (click)="toggleMode()">
+          {{ isLogin ? 'Registrovat se' : 'Přihlásit se' }}
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

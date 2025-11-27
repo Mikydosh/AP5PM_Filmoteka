@@ -10,6 +10,13 @@ import { importProvidersFrom } from '@angular/core';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 
+// Firebase
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { environment } from './environments/environment';
+
+
 // Inicializace dark mode před startem aplikace
 const savedMode = localStorage.getItem('darkMode');
 if (savedMode === 'true') {
@@ -27,6 +34,11 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(),
-    importProvidersFrom(IonicStorageModule.forRoot())
+    importProvidersFrom(IonicStorageModule.forRoot()),
+
+    // fire
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore())
   ],
 });
