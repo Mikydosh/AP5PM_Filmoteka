@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonToggle, IonIcon, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { informationCircle, trash, moon as moonIcon, logOut  } from 'ionicons/icons';
-import { StorageService } from '../../services/storage.service';
+import { FirestoreService } from '../../services/firestore.service';
 // odhlašování
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
@@ -20,7 +20,7 @@ export class SettingsPage implements OnInit {
   appVersion = '1.0.0';
 
   constructor(
-    private storageService: StorageService,
+    private firestoreService: FirestoreService,
     private alertController: AlertController,
     private authService: AuthService,
     private router: Router
@@ -94,14 +94,14 @@ toggleDarkPalette(shouldAdd: boolean) {
           role: 'destructive',
           handler: async () => {
             // Vymaž všechny seznamy
-            const lists = await this.storageService.getAllLists();
+            const lists = await this.firestoreService.getAllLists();
             for (const list of lists) {
               if (!list.isDefault) {
-                await this.storageService.deleteList(list.id);
+                await this.firestoreService.deleteList(list.id);
               } else {
                 // Vyprázdni výchozí seznamy
                 for (const item of list.items) {
-                  await this.storageService.removeFromList(list.id, item.id, item.type);
+                  await this.firestoreService.removeFromList(list.id, item.id, item.type);
                 }
               }
             }

@@ -6,7 +6,7 @@ import { SeriesService } from '../../services/series.service';
 import { SeriesDetail, Crew } from '../../models/series.model';
 // Přidání do seznamů
 import { ActionSheetController, IonButton } from '@ionic/angular/standalone';
-import { StorageService } from '../../services/storage.service';
+import { FirestoreService  } from '../../services/firestore.service';
 import { MediaList } from '../../models/list.model';
 import { addIcons } from 'ionicons';
 import { bookmark, bookmarkOutline } from 'ionicons/icons';
@@ -30,7 +30,7 @@ export class SeriesDetailPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private seriesService: SeriesService,
-    private storageService: StorageService,
+    private firestoreService: FirestoreService,
     private actionSheetController: ActionSheetController
   ) {
     addIcons({ bookmark, bookmarkOutline });
@@ -95,11 +95,11 @@ export class SeriesDetailPage implements OnInit {
 
   // Přidání do seznamu
   async loadLists() {
-    this.lists = await this.storageService.getAllLists();
+    this.lists = await this.firestoreService.getAllLists();
     
     if (this.series) {
       for (const list of this.lists) {
-        this.isInLists[list.id] = await this.storageService.isInList(
+        this.isInLists[list.id] = await this.firestoreService.isInList(
           list.id,
           this.series.id,
           'series'
@@ -150,7 +150,7 @@ export class SeriesDetailPage implements OnInit {
   async addToList(listId: string) {
     if (!this.series) return;
 
-    await this.storageService.addToList(listId, {
+    await this.firestoreService.addToList(listId, {
       id: this.series.id,
       title: this.series.name,
       poster_path: this.series.poster_path,
@@ -166,7 +166,7 @@ export class SeriesDetailPage implements OnInit {
   async removeFromList(listId: string) {
     if (!this.series) return;
 
-    await this.storageService.removeFromList(listId, this.series.id, 'series');
+    await this.firestoreService.removeFromList(listId, this.series.id, 'series');
     await this.loadLists();
   }
 
@@ -192,7 +192,7 @@ export class SeriesDetailPage implements OnInit {
           text: 'Vytvořit',
           handler: async (data) => {
             if (data.name && data.name.trim().length > 0) {
-              const newList = await this.storageService.createList(data.name.trim());
+              const newList = await this.firestoreService.createList(data.name.trim());
               await this.addToList(newList.id);
             }
           }

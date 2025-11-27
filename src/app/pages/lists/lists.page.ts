@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonSpinner, IonFab, IonFabButton, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add, list, checkmarkCircle, timeOutline, trash } from 'ionicons/icons';
-import { StorageService } from '../../services/storage.service';
+import { FirestoreService  } from '../../services/firestore.service';
 import { MediaList } from '../../models/list.model';
 
 @Component({
@@ -19,7 +19,7 @@ export class ListsPage implements OnInit {
   isLoading = true;
 
   constructor(
-    private storageService: StorageService,
+    private firestoreService: FirestoreService,
     private router: Router,
     private alertController: AlertController
   ) {
@@ -37,7 +37,7 @@ export class ListsPage implements OnInit {
 
   async loadLists() {
     this.isLoading = true;
-    this.lists = await this.storageService.getAllLists();
+    this.lists = await this.firestoreService.getAllLists();
     this.isLoading = false;
   }
 
@@ -64,7 +64,7 @@ export class ListsPage implements OnInit {
           text: 'Vytvořit',
           handler: async (data) => {
             if (data.name && data.name.trim().length > 0) {
-              await this.storageService.createList(data.name.trim());
+              await this.firestoreService.createList(data.name.trim());
               await this.loadLists();
             }
           }
@@ -108,7 +108,7 @@ export class ListsPage implements OnInit {
         text: 'Smazat',
         role: 'destructive',
         handler: async () => {
-          await this.storageService.deleteList(list.id);
+          await this.firestoreService.deleteList(list.id);
           await this.loadLists();
         }
       }

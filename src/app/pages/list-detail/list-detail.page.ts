@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons, IonSpinner, IonIcon, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { trash } from 'ionicons/icons';
-import { StorageService } from '../../services/storage.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { MediaList, MediaItem } from '../../models/list.model';
 
 @Component({
@@ -21,7 +21,7 @@ export class ListDetailPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private storageService: StorageService,
+    private firestoreService: FirestoreService,
     private alertController: AlertController
   ) {
     addIcons({ trash });
@@ -44,7 +44,7 @@ export class ListDetailPage implements OnInit {
 
   async loadList(listId: string) {
     this.isLoading = true;
-    this.list = await this.storageService.getList(listId);
+    this.list = await this.firestoreService.getList(listId);
     this.isLoading = false;
   }
 
@@ -72,7 +72,7 @@ export class ListDetailPage implements OnInit {
           role: 'destructive',
           handler: async () => {
             if (this.list) {
-              await this.storageService.removeFromList(this.list.id, item.id, item.type);
+              await this.firestoreService.removeFromList(this.list.id, item.id, item.type);
               await this.loadList(this.list.id);
             }
           }

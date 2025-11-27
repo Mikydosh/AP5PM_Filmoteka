@@ -6,7 +6,7 @@ import { MovieService } from 'src/app/services/movie.service';
 import { MovieDetail, Crew } from 'src/app/models/movie.model';
 // Přidání do seznamů
 import { ActionSheetController } from '@ionic/angular/standalone';
-import { StorageService } from '../../services/storage.service';
+import { FirestoreService  } from '../../services/firestore.service';
 import { MediaList } from '../../models/list.model';
 import { addIcons } from 'ionicons';
 import { bookmark, bookmarkOutline } from 'ionicons/icons';
@@ -29,7 +29,7 @@ export class MovieDetailPage implements OnInit {
 
   constructor(private route: ActivatedRoute, 
     private movieService: MovieService, 
-    private storageService: StorageService, 
+    private firestoreService: FirestoreService , 
     private actionSheetController: ActionSheetController 
   ) { 
     addIcons({ bookmark, bookmarkOutline });
@@ -88,12 +88,12 @@ export class MovieDetailPage implements OnInit {
 
   // Přidávání do seznamů
   async loadLists() {
-    this.lists = await this.storageService.getAllLists();
+    this.lists = await this.firestoreService.getAllLists();
     
     // Zkontroluj ve kterých seznamech už film je
     if (this.movie) {
       for (const list of this.lists) {
-        this.isInLists[list.id] = await this.storageService.isInList(
+        this.isInLists[list.id] = await this.firestoreService.isInList(
           list.id,
           this.movie.id,
           'movie'
@@ -146,7 +146,7 @@ export class MovieDetailPage implements OnInit {
 async addToList(listId: string) {
   if (!this.movie) return;
 
-  await this.storageService.addToList(listId, {
+  await this.firestoreService.addToList(listId, {
     id: this.movie.id,
     title: this.movie.title,
     poster_path: this.movie.poster_path,
@@ -162,7 +162,7 @@ async addToList(listId: string) {
   async removeFromList(listId: string) {
     if (!this.movie) return;
 
-    await this.storageService.removeFromList(listId, this.movie.id, 'movie');
+    await this.firestoreService.removeFromList(listId, this.movie.id, 'movie');
     await this.loadLists();
   }
 
@@ -188,7 +188,7 @@ async addToList(listId: string) {
           text: 'Vytvořit',
           handler: async (data) => {
             if (data.name && data.name.trim().length > 0) {
-              const newList = await this.storageService.createList(data.name.trim());
+              const newList = await this.firestoreService.createList(data.name.trim());
               await this.addToList(newList.id);
             }
           }
