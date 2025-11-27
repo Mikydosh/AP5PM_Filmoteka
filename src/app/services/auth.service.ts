@@ -9,10 +9,15 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
 
+  // Načítání před zobrazením UI, aby neblikla obrazovky filmy->login->filmy
+  private authInitialized = new BehaviorSubject<boolean>(false);
+  public authInitialized$ = this.authInitialized.asObservable();
+
   constructor(private auth: Auth) {
     // Poslouchej změny přihlášení
     onAuthStateChanged(this.auth, (user) => {
       this.currentUserSubject.next(user);
+      this.authInitialized.next(true);
     });
   }
 

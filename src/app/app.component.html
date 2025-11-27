@@ -1,3 +1,10 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  @if (isAuthInitialized) {
+    <ion-router-outlet></ion-router-outlet>
+  } @else {
+    <div class="auth-loading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Načítám...</p>
+    </div>
+  }
 </ion-app>

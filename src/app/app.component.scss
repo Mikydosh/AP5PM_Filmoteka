@@ -1,0 +1,18 @@
+.auth-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 16px;
+
+  ion-spinner {
+    width: 48px;
+    height: 48px;
+  }
+
+  p {
+    font-size: 16px;
+    color: var(--ion-color-medium);
+  }
+}
