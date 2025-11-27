@@ -11,11 +11,12 @@
 ></ion-searchbar>
   </ion-toolbar>
 
+  <!-- Kategorie -->
   <ion-toolbar>
     <ion-segment 
       [value]="selectedCategory" 
       (ionChange)="onCategoryChange($event)"
-    >
+      >
       <ion-segment-button value="popular">
         <ion-label>Populární</ion-label>
       </ion-segment-button>
@@ -36,6 +37,7 @@
     </ion-toolbar>
   </ion-header>
 
+  <!-- STAV 1 - vyhledávání -->
   <!-- Výsledky vyhledávání -->
   @if (showSearch) {
     @if (isSearching) {
@@ -47,12 +49,27 @@
       <h1>Výsledky vyhledávání...</h1>
       <div class="movies-grid">
         @for (movie of searchResults; track movie.id) {
+           <!-- 1 Karta -->
           <div class="movie-card" (click)="openDetail(movie.id)">
+            <!-- Poster -->
             <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.title">
+            <!-- Info o filmu -->
             <div class="movie-info">
               <h3>{{ movie.title }}</h3>
-              <p>{{ movie.release_date | date:'yyyy' }}</p>
-              <p>{{ getRatingPercent(movie.vote_average) }}%</p>
+              <div class="movie-meta">
+                <span class="year">{{ movie.release_date | date:'yyyy' }}</span>
+                <!-- Rating kruh -->
+                <div class="rating-circle">
+                  <svg viewBox="0 0 36 36">
+                    <circle class="rating-bg" cx="18" cy="18" r="16"></circle>
+                    <circle class="rating-progress" cx="18" cy="18" r="16"
+                      [attr.stroke]="getRatingColor(movie.vote_average)"
+                      [attr.stroke-dasharray]="getRatingDashArray(movie.vote_average)"
+                    ></circle>
+                  </svg>
+                  <span class="rating-text">{{ getRatingPercent(movie.vote_average) }}</span>
+                </div>
+              </div>
             </div>
           </div>
         }
@@ -63,13 +80,16 @@
       </div>
     }
   }
+<!-- STAV 2 - načítání filmů -->
 @if (!showSearch) {
   @if(isLoading){
     <div class="loading">
       <ion-spinner></ion-spinner>
       <p>Načítám filmy...</p>
     </div>
-  } @else{
+  } 
+    <!-- STAV 3 - výpis filmů -->
+  @else{
     <h1>
       @switch (selectedCategory) {
         @case ('top_rated') { Nejlépe hodnocené }
@@ -79,12 +99,37 @@
     </h1>
     <div class="movies-grid">
       @for (movie of movies; track movie.id){
+         <!-- 1 Karta -->
         <div class="movie-card" (click)="openDetail(movie.id)">
+          <!-- Poster -->
           <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.title">
+          <!-- Info o filmu -->
           <div class="movie-info">
             <h3>{{ movie.title }}</h3>
-            <p>{{ movie.release_date | date:'yyyy' }}</p>
-            <p>{{ getRatingPercent(movie.vote_average) }} %</p>
+            <div class="movie-meta">
+              <span class="year">
+                @if (selectedCategory === 'upcoming') {
+                  {{ movie.release_date | date:'d. M. yyyy' }}
+                } @else {
+                  {{ movie.release_date | date:'yyyy' }}
+                }
+              </span>
+              <!-- Rating kruh -->
+              <div class="rating-circle">
+                <svg viewBox="0 0 36 36">
+                  <circle class="rating-bg" cx="18" cy="18" r="16"></circle>
+                  <circle 
+                    class="rating-progress" 
+                    cx="18" 
+                    cy="18" 
+                    r="16"
+                    [attr.stroke]="getRatingColor(movie.vote_average)"
+                    [attr.stroke-dasharray]="getRatingDashArray(movie.vote_average)"
+                  ></circle>
+                </svg>
+                <span class="rating-text">{{ getRatingPercent(movie.vote_average) }}</span>
+              </div>
+            </div>
           </div>
         </div>
       }
