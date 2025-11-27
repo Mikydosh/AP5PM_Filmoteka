@@ -1,15 +1,29 @@
-h1 {
-  font-size: 50px;
-  font-weight: 600;
-  text-align: center;
-}
-
 .settings-container {
-  padding: 16px;
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 auto;
+  padding: 16px;
 }
 
+// User section - logo + email
+.user-section {
+  text-align: center;
+  padding: 32px 16px;
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 40px;
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+
+  .user-email {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+// Section
 .settings-section {
   margin-bottom: 32px;
 
@@ -19,18 +33,23 @@ h1 {
     text-transform: uppercase;
     color: var(--ion-color-medium);
     letter-spacing: 0.5px;
-    padding: 0 0 8px 4px;
+    padding: 0 4px 8px;
     margin: 0;
   }
 
-  ion-list {
-    margin: 0;
-    padding: 0;
+  // Card s zaoblenými rohy
+  .card {
+    background: var(--ion-card-background);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
 
     ion-item {
       --padding-start: 16px;
       --padding-end: 16px;
       --min-height: 56px;
+      --background: transparent;
       
       ion-icon[slot="start"] {
         margin-right: 16px;
@@ -42,10 +61,19 @@ h1 {
         font-size: 16px;
       }
     }
+  }
 
-    .danger-item {
-      ion-label {
-        font-weight: 500;
+  // Danger zone
+  &.danger-zone {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--ion-color-step-150);
+
+    .danger-card {
+      ion-item {
+        ion-label {
+          font-weight: 500;
+        }
       }
     }
   }

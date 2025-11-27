@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User, updatePassword } from '@angular/fire/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -46,5 +46,13 @@ export class AuthService {
   // Je přihlášený?
   isLoggedIn(): boolean {
     return this.getCurrentUser() !== null;
+  }
+
+  // Změnit heslo
+  async changePassword(newPassword: string): Promise<void> {
+    const user = this.getCurrentUser();
+    if (!user) throw new Error('User not logged in');
+    
+    await updatePassword(user, newPassword);
   }
 }
