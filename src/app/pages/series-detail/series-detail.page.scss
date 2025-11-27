@@ -9,78 +9,160 @@
 
 .series-detail {
   .content {
-    padding: 16px;
+    padding: 30px;
+  }
+
+  // Header s posterem a info vedle sebe
+  .header-section {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+    }
+  }
+
+  .poster-wrapper {
+    flex-shrink: 0;
   }
 
   .poster {
     width: 150px;
     aspect-ratio: 2/3;
     border-radius: 8px;
-    margin-bottom: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    @media (max-width: 480px) {
+      width: 120px;
+    }
+  }
+
+  .header-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   h1 {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 700;
-    margin: 0 0 8px;
+    margin: 0;
+    line-height: 1.2;
+
+    @media (max-width: 480px) {
+      font-size: 20px;
+    }
   }
 
   .original-title {
     font-size: 14px;
     color: var(--ion-color-medium);
     font-style: italic;
-    margin: 0 0 12px;
+    margin: 0;
   }
 
   .meta {
     display: flex;
+    align-items: center;
     gap: 8px;
     font-size: 14px;
     color: var(--ion-color-medium);
-    margin-bottom: 16px;
-    flex-wrap: wrap;
+
+    span {
+      white-space: nowrap;
+    }
   }
 
+  // Rating kruh
+  .rating-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+  }
+
+  .rating-circle {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+
+    svg {
+      transform: rotate(-90deg);
+      width: 100%;
+      height: 100%;
+    }
+
+    .rating-bg {
+      fill: none;
+      stroke: var(--ion-color-step-150);
+      stroke-width: 3;
+    }
+
+    .rating-progress {
+      fill: none;
+      stroke-width: 3;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.3s ease;
+    }
+
+    .rating-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+
+  .rating-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ion-color-medium);
+  }
+
+  // Žánry
   .genres {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
+    gap: 6px;
   }
 
   .genre {
-    background: rgba(var(--ion-color-primary-rgb), 0.2);
+    background: rgba(var(--ion-color-primary-rgb), 0.15);
     color: var(--ion-color-primary);
-    padding: 6px 12px;
-    border-radius: 16px;
-    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  // Sekce (popis, štáb, herci)
+  .section {
+    margin-bottom: 24px;
   }
 
   h2 {
     font-size: 18px;
     font-weight: 600;
-    margin: 16px 0 8px;
+    margin: 0 0 12px;
   }
 
   .overview {
     font-size: 15px;
     line-height: 1.6;
-    margin-bottom: 16px;
-  }
-
-  .creators {
-    font-size: 15px;
-    margin-bottom: 16px;
-    color: var(--ion-text-color);
+    margin: 0;
   }
 }
 
+// Cast grid
 .cast-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  margin-bottom: 16px;
 }
 
 .cast-card {

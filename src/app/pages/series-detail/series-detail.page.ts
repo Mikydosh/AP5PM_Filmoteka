@@ -207,4 +207,29 @@ export class SeriesDetailPage implements OnInit {
   isInAnyList(): boolean {
   return Object.values(this.isInLists).some(value => value === true);
 }
+
+// VZHLED kruh
+  getRatingColor(rating: number): string {
+    const percent = this.getRatingPercent(rating);
+    if (percent >= 85) return '#48E096';
+    if (percent >= 80) return '#88DB40';
+    if (percent >= 70) return '#B2DF39';
+    if (percent >= 60) return '#D6E233';
+    if (percent >= 50) return '#ECE430';
+    if (percent >= 30) return '#D9B82F';
+    if (percent >= 20) return '#B4622E';
+    if (percent === 0) return 'var(--ion-color-medium)';
+    return '#9E2E2E';
+  }
+
+  getRatingDashArray(rating: number): string {
+    const percent = this.getRatingPercent(rating);
+    const circumference = 2 * Math.PI * 16;
+
+    if (percent === 0) {
+      return `${circumference} ${circumference}`;
+    }
+    const dash = (percent / 100) * circumference;
+    return `${dash} ${circumference}`;
+  }
 }

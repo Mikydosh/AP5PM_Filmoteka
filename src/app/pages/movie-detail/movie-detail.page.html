@@ -4,6 +4,16 @@
       <ion-back-button defaultHref="/tabs/movies" text="Zpět"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ movie?.title || 'Detail filmu' }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openAddToListMenu()">
+        <ion-icon 
+          slot="icon-only" 
+          [name]="isInAnyList() ? 'bookmark' : 'bookmark-outline'"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -16,37 +26,68 @@
   } @else if (movie) {
     <div class="movie-detail">
       <div class="content">
-        <img [src]="getPosterUrl(movie.poster_path)" class="poster" [alt]="movie.title">
         
-        <h1>{{ movie.title }}</h1>
-        
-        @if (movie.original_title !== movie.title) {
-          <p class="original-title">{{ movie.original_title }}</p>
-        }
-        
-        <div class="meta">
-          <span>{{ getYear(movie.release_date) }}</span>
-          <span>•</span>
-          <span>{{ movie.runtime }} min</span>
-          <span>•</span>
-          <span>{{ getRatingPercent(movie.vote_average) }} %</span>
-        </div>
-        
-        @if (movie.genres.length > 0) {
-          <div class="genres">
-            @for (genre of movie.genres; track genre.id) {
-              <span class="genre">{{ genre.name }}</span>
+        <!-- Header s posterem a info VEDLE SEBE -->
+        <div class="header-section">
+          <!-- Plakát -->
+          <div class="poster-wrapper">
+            <img [src]="getPosterUrl(movie.poster_path)" class="poster" [alt]="movie.title">
+          </div>
+
+          <!-- Info vedle plakátu -->
+          <div class="header-info">
+            <h1>{{ movie.title }}</h1>
+            
+            @if (movie.original_title !== movie.title) {
+              <p class="original-title">{{ movie.original_title }}</p>
+            }
+            
+            <div class="meta">
+              <span>{{ getYear(movie.release_date) }}</span>
+              <span>•</span>
+              <span>{{ movie.runtime }} min</span>
+            </div>
+
+            <!-- Rating kruh -->
+            <div class="rating-section">
+              <div class="rating-circle">
+                <svg viewBox="0 0 36 36">
+                  <circle class="rating-bg" cx="18" cy="18" r="16"></circle>
+                  <circle 
+                    class="rating-progress" 
+                    cx="18" 
+                    cy="18" 
+                    r="16"
+                    [attr.stroke]="getRatingColor(movie.vote_average)"
+                    [attr.stroke-dasharray]="getRatingDashArray(movie.vote_average)"
+                  ></circle>
+                </svg>
+                <span class="rating-text">{{ getRatingPercent(movie.vote_average) }}</span>
+              </div>
+              <span class="rating-label">{{ movie.vote_count }} Hodnocení</span>
+            </div>
+            
+            @if (movie.genres.length > 0) {
+              <div class="genres">
+                @for (genre of movie.genres; track genre.id) {
+                  <span class="genre">{{ genre.name }}</span>
+                }
+              </div>
             }
           </div>
-        }
-        
+        </div>
+
+        <!-- Popis POD plakátem -->
         @if (movie.overview) {
-          <h2>Popis</h2>
-          <p class="overview">{{ movie.overview }}</p>
+          <div class="section">
+            <h2>Popis</h2>
+            <p class="overview">{{ movie.overview }}</p>
+          </div>
         }
 
-        <!-- Štáb (režisér a hudba v gridu jako herci) -->
-          @if (getDirector() || getComposer()) {
+        <!-- Štáb -->
+        @if (getDirector() || getComposer()) {
+          <div class="section">
             <h2>Štáb</h2>
             <div class="cast-grid">
               @if (getDirector(); as director) {
@@ -77,10 +118,12 @@
                 </div>
               }
             </div>
-          }
+          </div>
+        }
 
-          <!-- Herci -->
-          @if (movie.credits?.cast?.length) {
+        <!-- Herci -->
+        @if (movie.credits?.cast?.length) {
+          <div class="section">
             <h2>Herci</h2>
             <div class="cast-grid">
               @for (actor of (movie.credits?.cast || []).slice(0, 12); track actor.id) {
@@ -97,14 +140,10 @@
                 </div>
               }
             </div>
-          }
-        </div>
+          </div>
+        }
+        
       </div>
+    </div>
   }
-
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-  <ion-fab-button (click)="openAddToListMenu()">
-    <ion-icon [name]="isInAnyList() ? 'bookmark' : 'bookmark-outline'"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
 </ion-content>
