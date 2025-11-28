@@ -4,6 +4,16 @@
       <ion-back-button defaultHref="/tabs/series" text="Zpět"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ series?.name || 'Detail seriálu' }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openAddToListMenu()">
+        <ion-icon 
+          slot="icon-only" 
+          [name]="isInAnyList() ? 'bookmark' : 'bookmark-outline'"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    
   </ion-toolbar>
 </ion-header>
 
