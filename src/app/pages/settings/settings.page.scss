@@ -1,3 +1,20 @@
+.logo-header {
+  text-align: center;
+  padding: 24px 0 0;
+  
+  .settings-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  }
+  h1 {
+    font-size: 40px;
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+}
+
 .settings-container {
   max-width: 500px;
   margin: 0 auto;
@@ -7,14 +24,8 @@
 // User section - logo + email
 .user-section {
   text-align: center;
-  padding: 32px 16px;
+  padding: 0 16px;
   margin-bottom: 24px;
-
-  h1 {
-    font-size: 40px;
-    font-weight: 700;
-    margin: 0 0 12px;
-  }
 
   .user-email {
     font-size: 14px;
