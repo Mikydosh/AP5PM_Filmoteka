@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonSpinner, IonFab, IonFabButton, AlertController } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonSpinner, IonFab, IonFabButton, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add, list, checkmarkCircle, timeOutline, trash } from 'ionicons/icons';
 import { FirestoreService  } from '../../services/firestore.service';
@@ -12,7 +12,7 @@ import { MediaList } from '../../models/list.model';
   templateUrl: 'lists.page.html',
   styleUrls: ['lists.page.scss'],
   standalone: true,
-  imports: [ CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonSpinner, IonFab, IonFabButton ],
+  imports: [ CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonSpinner, IonFab, IonFabButton ],
 })
 export class ListsPage implements OnInit {
   lists: MediaList[] = [];

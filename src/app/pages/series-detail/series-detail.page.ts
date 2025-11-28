@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons, IonSpinner, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons, IonSpinner, IonIcon } from '@ionic/angular/standalone';
 import { SeriesService } from '../../services/series.service';
 import { SeriesDetail, Crew } from '../../models/series.model';
 // Přidání do seznamů
@@ -16,7 +16,7 @@ import { bookmark, bookmarkOutline } from 'ionicons/icons';
   templateUrl: './series-detail.page.html',
   styleUrls: ['./series-detail.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons, IonSpinner, IonButton, IonFab, IonFabButton, IonIcon ],
+  imports: [CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonBackButton, IonButtons, IonSpinner, IonButton, IonIcon ],
 })
 
 

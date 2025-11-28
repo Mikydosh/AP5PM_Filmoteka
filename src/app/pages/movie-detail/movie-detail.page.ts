@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons, IonSpinner, IonButton, IonFab, IonFabButton, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons, IonSpinner, IonButton, IonIcon } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from 'src/app/services/movie.service';
 import { MovieDetail, Crew } from 'src/app/models/movie.model';
@@ -16,7 +16,7 @@ import { bookmark, bookmarkOutline } from 'ionicons/icons';
   templateUrl: './movie-detail.page.html',
   styleUrls: ['./movie-detail.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, IonBackButton, IonButtons, IonSpinner, IonButton, IonFab, IonFabButton, IonIcon ]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, IonBackButton, IonButtons, IonSpinner, IonButton, IonIcon ]
 })
 
 

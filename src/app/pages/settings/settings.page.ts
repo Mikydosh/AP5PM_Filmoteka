@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonToggle, IonIcon, AlertController } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonToggle, IonIcon, AlertController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { informationCircle, trash, moon as moonIcon, logOut, key, sunny } from 'ionicons/icons';
 import { FirestoreService } from '../../services/firestore.service';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: 'settings.page.html',
   styleUrls: ['settings.page.scss'],
   standalone: true,
-  imports: [ CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonToggle, IonIcon ],
+  imports: [ CommonModule, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonToggle, IonIcon ],
 })
 export class SettingsPage implements OnInit {
   paletteToggle = false;
