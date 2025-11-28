@@ -21,7 +21,7 @@
     
     <!-- User info -->
     <div class="user-section">
-      <p class="user-email">{{ userEmail }}</p>
+      <p class="user-email" color="light">{{ userEmail }}</p>
     </div>
 
     <!-- Vzhled -->
@@ -29,7 +29,7 @@
       <h2 class="section-title">VZHLED</h2>
       <div class="card">
         <ion-item lines="none">
-          <ion-icon name="moon" slot="start"></ion-icon>
+          <ion-icon name="moon" slot="start" color="primary"></ion-icon>
           <ion-label>Tmavý režim</ion-label>
           <ion-toggle 
             slot="end"
@@ -45,7 +45,7 @@
       <h2 class="section-title">ÚČET</h2>
       <div class="card">
         <ion-item button (click)="changePassword()" lines="none">
-          <ion-icon name="key-outline" slot="start"></ion-icon>
+          <ion-icon name="key-outline" slot="start" color="secondary"></ion-icon>
           <ion-label>Změnit heslo</ion-label>
         </ion-item>
       </div>
@@ -56,7 +56,7 @@
       <h2 class="section-title">APLIKACE</h2>
       <div class="card">
         <ion-item button (click)="showAbout()" lines="none">
-          <ion-icon name="information-circle" slot="start"></ion-icon>
+          <ion-icon name="information-circle" slot="start" color="secondary"></ion-icon>
           <ion-label>O aplikaci</ion-label>
           <ion-label slot="end" class="version-label">v{{ appVersion }}</ion-label>
         </ion-item>
