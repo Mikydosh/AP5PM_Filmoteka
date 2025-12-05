@@ -67,9 +67,21 @@ export class MoviesPage implements OnInit {
     
     request.subscribe({
       next: (response) => {
-        this.movies = response.results;
+
+      let movies = response.results;
+
+      // Filtr pro upcoming
+      if (this.selectedCategory === 'upcoming') {
+        movies = movies.filter(m => m.vote_count === 0 || m.vote_average === 0);
+      }
+
+        this.movies = movies;
         this.totalPages = response.total_pages;
         this.isLoading = false;
+        
+        if (this.selectedCategory === 'upcoming' && this.movies.length < 10 && this.currentPage < this.totalPages) {
+        this.loadMoreMovies();  // rekursivně načte další stránku
+}
       },
       error: (error) => {
         console.error('Error loading movies:', error);
@@ -79,7 +91,7 @@ export class MoviesPage implements OnInit {
   }
 
   // Načítání dalších stránek (po 20 filmech) pro infinite scroll 
-  loadMoreMovies(event: any) {
+  loadMoreMovies(event?: any) {
     if (this.currentPage >= this.totalPages) {
       event.target.complete();
       return;
@@ -101,15 +113,22 @@ export class MoviesPage implements OnInit {
     }
     
     request.subscribe({
-      next: (response) => {
-        this.movies = [...this.movies, ...response.results];  // ← append, ne replace
-        event.target.complete();
-      },
-      error: (error) => {
-        console.error('Error loading more movies:', error);
-        event.target.complete();
+    next: (response) => {
+      let newMovies = response.results;
+
+      if (this.selectedCategory === 'upcoming') {
+        newMovies = newMovies.filter(
+          m => m.vote_count === 0 || m.vote_average === 0
+        );
       }
-    });
+
+      this.movies = [...this.movies, ...newMovies];
+      event.target.complete();
+    },
+    error: () => {
+      event.target.complete();
+    }
+  });
   }
 
   getPosterUrl(path: string | null): string {
