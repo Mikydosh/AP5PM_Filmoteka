@@ -24,8 +24,8 @@ export class MovieDetailPage implements OnInit {
   movie: MovieDetail | null = null;
   isLoading = true;
 
-  lists: MediaList[] = [];
-  isInLists: { [listId: string]: boolean } = {};
+  lists: MediaList[] = []; // pole všech seznamů
+  isInLists: { [listId: string]: boolean } = {}; // kontrola pro UI, ve kterých seznamech je film
 
   constructor(private route: ActivatedRoute, 
     private movieService: MovieService, 
@@ -88,11 +88,12 @@ export class MovieDetailPage implements OnInit {
 
   // Přidávání do seznamů
   async loadLists() {
-    this.lists = await this.firestoreService.getAllLists();
+    this.lists = await this.firestoreService.getAllLists(); // načtení všech seznamů uživatele
     
     // Zkontroluj ve kterých seznamech už film je
     if (this.movie) {
       for (const list of this.lists) {
+        // Ulož do isInLists zda je film v daném seznamu (true/false)
         this.isInLists[list.id] = await this.firestoreService.isInList(
           list.id,
           this.movie.id,
@@ -109,14 +110,14 @@ export class MovieDetailPage implements OnInit {
 
     // Přidej tlačítka pro existující seznamy
     for (const list of this.lists) {
-      const isInList = this.isInLists[list.id];
+      const isInList = this.isInLists[list.id]; // pokud je na indexu true, tak je v seznamu
       buttons.push({
-        text: isInList ? `✓ ${list.name}` : list.name,
+        text: isInList ? `✓ ${list.name}` : list.name, // pokud je v seznamu, tak přidej fajfku
         handler: async () => {
           if (isInList) {
-            await this.removeFromList(list.id);
+            await this.removeFromList(list.id); // pokud je v seznamu, tak odeber
           } else {
-            await this.addToList(list.id);
+            await this.addToList(list.id);  // pokud není v seznamu, tak přidej
           }
         }
       });

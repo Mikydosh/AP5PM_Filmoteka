@@ -39,7 +39,7 @@
 
   <!-- STAV 1 - vyhledávání -->
   <!-- Výsledky vyhledávání -->
-  @if (showSearch) {
+  @if (showSearch) {<!-- pokud je něco ve vyhledávacím poli  -->
     @if (isSearching) {
       <div class="loading">
         <ion-spinner></ion-spinner>
@@ -81,7 +81,7 @@
     }
   }
 <!-- STAV 2 - načítání filmů -->
-@if (!showSearch) {
+@if (!showSearch) { <!-- pokud je vyhledávací pole prázdné -->
   @if(isLoading){
     <div class="loading">
       <ion-spinner></ion-spinner>

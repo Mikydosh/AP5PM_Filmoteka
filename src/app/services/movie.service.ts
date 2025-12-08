@@ -46,7 +46,7 @@ export class MovieService {
   // DETAIL PO ROZKLIKNUTI FILMU
   getDetail(id: number): Observable<MovieDetail> {
     return this.http.get<MovieDetail>(
-      `${this.baseUrl}/movie/${id}?api_key=${this.apiKey}&language=cs-CZ&append_to_response=credits,watch/providers`
+      `${this.baseUrl}/movie/${id}?api_key=${this.apiKey}&language=cs-CZ&append_to_response=credits`
     );
   }
   //  Obrázky štábu a herců v detailu filmu

@@ -24,28 +24,27 @@
               class="item-poster"
             >
             <div class="item-info">
-  <h3>{{ item.title }}</h3>
-  <div class="item-meta">
-    <span class="type-badge">{{ getType(item.type) }}</span>
-    <span class="year">{{ getYear(item.release_date) }}</span>
-    
-    <!-- ZMĚŇ TOTO: -->
-    <div class="rating-circle">
-      <svg viewBox="0 0 36 36">
-        <circle class="rating-bg" cx="18" cy="18" r="16"></circle>
-        <circle 
-          class="rating-progress" 
-          cx="18" 
-          cy="18" 
-          r="16"
-          [attr.stroke]="getRatingColor(item.vote_average)"
-          [attr.stroke-dasharray]="getRatingDashArray(item.vote_average)"
-        ></circle>
-      </svg>
-      <span class="rating-text">{{ getRatingPercent(item.vote_average) }}</span>
-    </div>
-  </div>
-</div>
+            <h3>{{ item.title }}</h3>
+            <div class="item-meta">
+              <span class="type-badge">{{ getType(item.type) }}</span>
+              <span class="year">{{ getYear(item.release_date) }}</span>
+              <div class="rating-circle">
+                <svg viewBox="0 0 36 36">
+                  <circle class="rating-bg" cx="18" cy="18" r="16"></circle>
+                  <circle 
+                    class="rating-progress" 
+                    cx="18" 
+                    cy="18" 
+                    r="16"
+                    [attr.stroke]="getRatingColor(item.vote_average)"
+                    [attr.stroke-dasharray]="getRatingDashArray(item.vote_average)"
+                  ></circle>
+                </svg>
+                <span class="rating-text">{{ getRatingPercent(item.vote_average) }}</span>
+              </div>
+            </div>
+          </div>
+          
             <button class="delete-button" (click)="removeItem(item, $event)">
               <ion-icon name="trash"></ion-icon>
             </button>

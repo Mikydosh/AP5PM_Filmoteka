@@ -20,8 +20,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // Počkej na inicializaci auth
-    this.authService.authInitialized$.subscribe(initialized => {
-      if (initialized) {
+    this.authService.authInitialized$.subscribe(initialized => { // "sleduj změny na authInitialized$"
+      if (initialized) { // až je true (uživatel načten), tak pokračuj
         this.isAuthInitialized = true;
         
         // Až teď přesměruj

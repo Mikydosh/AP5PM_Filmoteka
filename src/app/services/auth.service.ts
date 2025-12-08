@@ -10,14 +10,14 @@ export class AuthService {
   public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
 
   // Načítání před zobrazením UI, aby neblikla obrazovky filmy->login->filmy
-  private authInitialized = new BehaviorSubject<boolean>(false);
+  private authInitialized = new BehaviorSubject<boolean>(false); // v základu false, až se načte user, tak true
   public authInitialized$ = this.authInitialized.asObservable();
 
   constructor(private auth: Auth) {
     // Poslouchej změny přihlášení
-    onAuthStateChanged(this.auth, (user) => {
-      this.currentUserSubject.next(user);
-      this.authInitialized.next(true);
+    onAuthStateChanged(this.auth, (user) => { // zavolá firebase auomaticky, hledá token v local storage. Dekóduje ho a vrací usera nebo null
+      this.currentUserSubject.next(user); // uložení usera do BehaviorSubjectu
+      this.authInitialized.next(true);  // označení, že inicializace proběhla -> AppComponent může pokračovat
     });
   }
 

@@ -7,9 +7,10 @@ export const authGuard = () => {
   const router = inject(Router);
 
   if (authService.isLoggedIn()) {
-    return true;
+    return true;  // povolení přístupu na stránku
   }
 
   router.navigate(['/login']);
-  return false;
+  return false;  // zamítnutí přístupu a přesměrování na přihlašovací stránku
+
 };
