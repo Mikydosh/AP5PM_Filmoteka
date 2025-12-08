@@ -131,14 +131,27 @@ Otevře se Android Studio → spusť na emulátoru nebo fyzickém zařízení.
 1. Počkat, až se všechno načte
 2. Pokud bude nahoře šedá ikona ▶️ a text "Edit Configurations":
    - Kliknout na ikonu **Slona s šipkou** (Sync Project with Gradle Files)
-   - Pokud ani to nepomůže, je nutné nastavit konfiguraci
+   - Pokud ani to nepomůže, je nutné nastavit konfiguraci aplikace
+   - Pokud chybí emulátor zařízení, musí se přidat
 
-**Kofigurace:**
-- Klikni na "Edit Configurations..."
-- Klikni na „+“ (Add New Configuration) a vyber Android Application.
-- V poli Module vyber `app` (nebo název modulu)
-- Dej konfiguraci nějaké jméno (např. „app“)
-- Apply -> OK
+### Konfigurace:
+3. **Nahoře** klikni na "Edit Configurations..."
+4. Klikni na „+“ (Add New Configuration) a vyber Android Application.
+5. V poli Module vyber `app` (nebo název modulu)
+6. Dej konfiguraci nějaké jméno (např. „app“)
+7. Apply -> OK
+
+### Emulátor:
+>Pokud nemáš nakonfigurované zařízení, je potřeba v pravém panelu **Device manager** přidat zařízení
+8. Klikni na „+“
+9. Create Virtual Device
+10. Vyber si telefon, já testoval Pixel 9 Pro, 9 Pro XL a medium phone
+11. Next > Finish > Yes
+12. Počkej, až se vše stáhne
+
+13. Utelefonu klikni na ▶️ a počkej, až se spustí
+14. Stiskni ▶️ nahoře vedle app a počkej, až se aplikace spustí
+15. Aplikace běží
 
 ## 📁 Struktura projektu
 ```
