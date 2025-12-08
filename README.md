@@ -169,11 +169,11 @@ filmoteka/
 ## 🎨 Screenshoty
 > Screenshoty jsou pořízené z emulátoru pro telefon Google Pixel 9 Pro, tvůj vzhled se může lišit v závislosti na typu zařízení, rozlišení, poměru stran atd.
 
-<img width="1280" height="2856" alt="login" src="https://github.com/user-attachments/assets/7db8c259-bf9f-4e9a-96fe-0eb5ab78b0b2" />
-<img width="1280" height="2856" alt="filmy" src="https://github.com/user-attachments/assets/d4f61626-8232-4be8-a091-6a60c589cfa0" />
-<img width="1280" height="2856" alt="detail" src="https://github.com/user-attachments/assets/4e0d3c9f-f2e3-4571-b961-659ae5c14366" />
-<img width="1280" height="2856" alt="seznamy" src="https://github.com/user-attachments/assets/4b59af68-15da-42ab-aa96-8b9154012c68" />
-<img width="1280" height="2856" alt="nastaveni" src="https://github.com/user-attachments/assets/b2c46609-dd9a-4b85-be3e-37b8a3028041" />
+<img width="300" alt="login" src="https://github.com/user-attachments/assets/7db8c259-bf9f-4e9a-96fe-0eb5ab78b0b2" />
+<img width="300" alt="filmy" src="https://github.com/user-attachments/assets/d4f61626-8232-4be8-a091-6a60c589cfa0" />
+<img width="300"  alt="detail" src="https://github.com/user-attachments/assets/4e0d3c9f-f2e3-4571-b961-659ae5c14366" />
+<img width="300"  alt="seznamy" src="https://github.com/user-attachments/assets/4b59af68-15da-42ab-aa96-8b9154012c68" />
+<img width="300"  alt="nastaveni" src="https://github.com/user-attachments/assets/b2c46609-dd9a-4b85-be3e-37b8a3028041" />
 
 ## 🔑 Klíčové funkce aplikace
 
